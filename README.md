@@ -1,7 +1,6 @@
 # Mowgli-Bingo
 
 ## Dependencies
----
 - Python (2 probably works)
 - Pillow
 - numpy
