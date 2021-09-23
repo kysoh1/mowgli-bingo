@@ -21,33 +21,51 @@ LABELS = ["FREE",
 class Game():
     def __init__(self, labels):
         self.labels = labels
-        self.checkedLabels  = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+        self.state  = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
         
     def checkWin(self):
-        for row in self.checkedLabels:
+        #Check rows
+        for row in self.state:
             if row[0] == 1 and row.count(row[0]) == len(row):
                 return True
         
-        transposedLabels = np.transpose(self.labels)
-        for row in transposedLabels:
+        #Check columns
+        state = np.array(self.state)
+        transposedState = np.transpose(state)
+        for row in transposedState:
+            #Convert numpy array to list
+            row = row.tolist()
             if row[0] == 1 and row.count(row[0]) == len(row):
                 return True
-            
-        for i in range (0, len(self.checkedLabels) - 1):
-            if self.labels[i][i] == 0:
-                break
         
-        for i in range (0, len(self.checkedLabels) - 1):
-            if self.labels[i][len(self.checkedLabels) - 1 - i] == 0:
+        #Check diagonals
+        diagOne = True
+        diagTwo = True
+        for i in range (0, len(self.state)):
+            #Initial check, false if both diagonals have a 0
+            if self.state[i][i] == 0 and self.state[i][len(self.state) - 1 - i] == 0:
+                diagOne = False
+                diagTwo = False
                 break
             
+            #Top left to bottom right
+            if self.state[i][i] == 0:
+                diagOne = False
+            
+            #Bottom left to top right
+            if self.state[i][len(self.state) - 1 - i] == 0:
+                diagTwo = False
+            
+        if diagOne or diagTwo:
+            return True
+
         return False
     
-    def updateLabelState(self, x, y):
-        if self.checkedLabels[x][y] == 0:
-            self.checkedLabels[x][y] = 1
+    def updateState(self, x, y):
+        if self.state[x][y] == 0:
+            self.state[x][y] = 1
         else:
-            self.checkedLabels[x][y] = 0
+            self.state[x][y] = 0
 
 def randomiseLabels():
     labels = np.array(LABELS)
