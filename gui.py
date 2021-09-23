@@ -15,6 +15,9 @@ class Application(Tk):
         self.minsize(800, 700)
         self.maxsize(800, 700)
         
+        #Game object
+        self.game = bingo.Game()
+        
         #Store frames
         self.frames = {}
         container = Frame(self)
@@ -24,7 +27,7 @@ class Application(Tk):
         
         for frameType in (MainFrame, SettingsFrame):
             pageName = frameType.__name__
-            frame = frameType(parent=container, app=self)
+            frame = frameType(parent=container, app=self, game=self.game)
             self.frames[pageName] = frame
             frame.grid(row=0, column=0, sticky="nsew")
             
@@ -33,18 +36,18 @@ class Application(Tk):
     def switchFrame(self, frameType):
         frame = self.frames[frameType]
         frame.tkraise()
-    
 
 class MainFrame(Frame):
-    def __init__(self, parent, app):
+    def __init__(self, parent, app, game):
         Frame.__init__(self, parent)
         self.img = PhotoImage(file="Mowgli.png")
         self.label = Label(self, image=self.img)
         self.label.place(x=0, y=0, relwidth=1, relheight=1)
         
         self.app = app
-        self.game = bingo.Game(bingo.randomiseLabels())
+        self.game = game
         self.label = None
+        self.shuffleBingo()
         self.createWidgets()
         
     def createWidgets(self):
@@ -72,7 +75,7 @@ class MainFrame(Frame):
             columnIdx = 0
             
         shuffleButton = Button(self, bg="#4F5F52", fg="white", activebackground="#4F5F52", activeforeground="white", borderwidth=0, text="Shuffle", font=("Helvetica", 10, "bold"), height=4, width=20, relief="solid", command=lambda: self.shuffleBingo())
-        shuffleButton.place(x=100, y=600)
+        shuffleButton.place(x=80, y=600)
         labelButton = Button(self, bg="#4F5F52", fg="white", activebackground="#4F5F52", activeforeground="white", borderwidth=0, text="Change contents", font=("Helvetica", 10, "bold"), height=4, width=20, relief="solid", command=lambda: self.app.switchFrame(SettingsFrame.__name__))
         labelButton.place(x=550, y=600)
         
@@ -93,21 +96,54 @@ class MainFrame(Frame):
             self.label = None
     
     def shuffleBingo(self):
-        self.game = bingo.Game(bingo.randomiseLabels())
+        self.game.randomiseLabels()
+        self.game.resetState()
         self.createWidgets()
+        
+        if self.label is not None:
+            self.label.destroy()
+            self.label = None
 
 class SettingsFrame(Frame):
-    def __init__(self, parent, app):
+    def __init__(self, parent, app, game):
         Frame.__init__(self, parent)
         self.img = PhotoImage(file="Mowgli.png")
         self.label = Label(self, image=self.img)
         self.label.place(x=0, y=0, relwidth=1, relheight=1)
         
         self.app = app
+        self.game = game
+        self.texts = []
         self.createWidgets()
         
     def createWidgets(self):
+        labels = np.array(self.game.labels).ravel().tolist()
+        for i in range(0, len(labels) // 2):
+            leftText = Text(self, height=4, width=40)
+            rightText = Text(self, height=4, width=40)
+            leftText.insert(INSERT, labels[i])
+            rightText.insert(INSERT, labels[i + len(labels) // 2])
+            
+            if i == 0:
+                leftText.grid(row=i, column=0, padx=(80, 0), pady=(30,0))
+                rightText.grid(row=i, column=1, pady=(30,0))
+            else:
+                leftText.grid(row=i, column=0, padx=(80, 0))
+                rightText.grid(row=i, column=1)
+            
+            self.texts.append(leftText)
+            self.texts.append(rightText)
+            
+        saveButton = Button(self, text="Save settings", height=5, width=20, command=lambda: self.saveSettings())
+        saveButton.place(x=200, y=590)
         leaveButton = Button(self, text="Go back", height=5, width=20, command=lambda: self.app.switchFrame(MainFrame.__name__))
-        leaveButton.place(x=0, y=0)
-        leaveButton.pack()
+        leaveButton.place(x=470, y=590)
+    
+    def saveSettings(self):
+        newLabels = []
+        for text in self.texts:
+            label = text.get(1.0, END).strip("\n")
+            newLabels.append(label)
         
+        newLabels = np.array(newLabels).reshape(4, 4)
+        self.game.changeLabels(newLabels.tolist())
