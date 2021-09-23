@@ -23,14 +23,11 @@ class Application(Tk):
         self.minsize(800, 700)
         self.maxsize(800, 700)
         
-<<<<<<< HEAD
         # Store frames
-=======
         #Game object
         self.game = bingo.Game()
         
         #Store frames
->>>>>>> refs/remotes/origin/master
         self.frames = {}
         container = Frame(self)
         container.pack(side="top", fill="both", expand=True)
@@ -129,12 +126,10 @@ class SettingsFrame(Frame):
         self.createWidgets()
         
     def createWidgets(self):
-<<<<<<< HEAD
         leaveButton = Button(self, text="Go back", height=5, width=20, command=lambda: self.app.switchFrame(MainFrame.__name__))
         leaveButton.place(x=0, y=0)
         leaveButton.pack()
         
-=======
         labels = np.array(self.game.labels).ravel().tolist()
         for i in range(0, len(labels) // 2):
             leftText = Text(self, bg="#CCFFE5", borderwidth=2, height=4, width=40, relief="solid")
@@ -165,4 +160,3 @@ class SettingsFrame(Frame):
         
         newLabels = np.array(newLabels).reshape(4, 4)
         self.game.changeLabels(newLabels.tolist())
->>>>>>> refs/remotes/origin/master
