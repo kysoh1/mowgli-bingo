@@ -1,26 +1,24 @@
 import numpy as np
 import random
 
-LABELS = ["FREE", 
-          "'I played that so well'", 
-          "Unintelligible moaning", 
-          "Has incorrect runes", 
-          "Initiates an FF vote", 
-          "Types in all chat asking if there are any single ladies", 
-          "Picks an assassin champion",
-          "Praises himself after making a play",
-          "Switches to ARAM after losing a normal game",
-          "Picks Nasus",
-          "Picks Evelynn",
-          "Leaves voice chat without saying goodbye",
-          "Goes to eat dinner then comes back immediately and asks you to stream the game",
-          "'I think we lost this one' (Must be said in champ select)",
-          "Gets camped by jungler during laning phase",
-          "Gets solo killed within the first 15 minutes"]
-
 class Game():
-    def __init__(self, labels):
-        self.labels = labels
+    def __init__(self):
+        self.labels = [["FREE", 
+                       "'I played that so well'", 
+                       "Unintelligible moaning", 
+                       "Has incorrect runes"], 
+                       ["Initiates an FF vote", 
+                       "Types in all chat asking if there are any single ladies", 
+                       "Picks an assassin champion",
+                       "Praises himself after making a play"],
+                       ["Switches to ARAM after losing a normal game",
+                       "Picks Nasus",
+                       "Picks Evelynn",
+                       "Leaves voice chat without saying goodbye"],
+                       ["Goes to eat dinner then comes back immediately and asks you to stream the game",
+                       "'I think we lost this one' (Must be said in champ select)",
+                       "Gets camped by jungler during laning phase",
+                       "Gets solo killed within the first 15 minutes"]]
         self.state  = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
         
     def checkWin(self):
@@ -67,10 +65,19 @@ class Game():
             self.state[x][y] = 1
         else:
             self.state[x][y] = 0
-
-def randomiseLabels():
-    labels = np.array(LABELS)
-    random.shuffle(labels)
     
-    return labels.reshape(4, 4)
+    def resetState(self):
+        for i in range(0, len(self.state)):
+            for j in range(0, len(self.state)):
+                self.state[i][j] = 0
     
+    def randomiseLabels(self):
+        npLabels = np.array(self.labels)
+        npLabels = npLabels.ravel()
+        random.shuffle(npLabels)
+        npLabels = npLabels.reshape(4, 4)
+        self.labels = npLabels.tolist()
+        
+    def changeLabels(self, newLabels):
+        self.labels = newLabels
+        
