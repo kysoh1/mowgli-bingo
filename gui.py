@@ -10,7 +10,9 @@ class Application(Tk):
         Tk.__init__(self)
         #Frame settings
         self.title("Welcome to Mowgli Bingo! Moooooooooowgli Edition")
-        self.iconbitmap("Mowgli.ico")
+        # testImg = PhotoImage(file="Mowgli.gif")
+        # self.tk.call("wm", "iconphoto", self._w, testImg)
+        # self.iconbitmap(testImg)
         self.geometry("800x800")
         self.minsize(800, 700)
         self.maxsize(800, 700)
