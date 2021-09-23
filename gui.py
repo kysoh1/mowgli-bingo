@@ -1,6 +1,7 @@
 from tkinter import *
 from PIL import ImageTk
 from PIL import Image
+import platform
 import numpy as np
 
 import bingo
@@ -10,7 +11,11 @@ class Application(Tk):
         Tk.__init__(self)
         #Frame settings
         self.title("Welcome to Mowgli Bingo! Moooooooooowgli Edition")
-        # self.iconbitmap("Mowgli.ico")
+        
+        # Long story short, Linux systems don't really have icons on their windows.
+        if platform.system() == "Windows":
+        	self.iconbitmap("Mowgli.ico")
+        	
         self.geometry("800x800")
         self.minsize(800, 700)
         self.maxsize(800, 700)
