@@ -60,7 +60,8 @@ class MainFrame(Frame):
         columnIdx = 0
         for row in self.game.labels:
             for label in row:
-                button = Button(self, bg="#CCFFE5", activebackground="#CCFFE5", borderwidth=1, wraplength=100, justify=CENTER, text=label, font=("Arial", 10, "bold"), relief="flat", height=8, width=20)
+                button = Button(self, bg="#CCFFE5", activebackground="#CCFFE5", borderwidth=1, wraplength=100, justify=CENTER,
+                                text=label, font=("Arial", 10, "bold"), relief="flat", height=8, width=20)
                 button.configure(command=lambda button=button, x=columnIdx, y=rowIdx: self.buttonClick(button, x, y))
                 #Pad top left
                 if columnIdx == 0 and rowIdx == 0:
@@ -79,9 +80,13 @@ class MainFrame(Frame):
             rowIdx = rowIdx + 1
             columnIdx = 0
             
-        shuffleButton = Button(self, bg="#4F5F52", fg="white", activebackground="#4F5F52", activeforeground="white", borderwidth=0, text="Shuffle", font=("Helvetica", 10, "bold"), height=4, width=20, relief="solid", command=lambda: self.shuffleBingo())
+        shuffleButton = Button(self, bg="#4F5F52", fg="white", activebackground="#4F5F52", activeforeground="white",
+                               borderwidth=0, text="Shuffle", font=("Helvetica", 10, "bold"), height=4, width=20,
+                               relief="solid", command=lambda: self.shuffleBingo())
         shuffleButton.place(x=80, y=600)
-        labelButton = Button(self, bg="#4F5F52", fg="white", activebackground="#4F5F52", activeforeground="white", borderwidth=0, text="Change contents", font=("Helvetica", 10, "bold"), height=4, width=20, relief="solid", command=lambda: self.app.switchFrame(SettingsFrame.__name__))
+        labelButton = Button(self, bg="#4F5F52", fg="white", activebackground="#4F5F52", activeforeground="white",
+                             borderwidth=0, text="Change contents", font=("Helvetica", 10, "bold"), height=4, width=20,
+                             relief="solid", command=lambda: self.app.switchFrame(SettingsFrame.__name__))
         labelButton.place(x=550, y=600)
         
     def buttonClick(self, button, x, y):
@@ -139,9 +144,13 @@ class SettingsFrame(Frame):
             self.texts.append(leftText)
             self.texts.append(rightText)
             
-        saveButton = Button(self, bg="#4F5F52", fg="white", activebackground="#4F5F52", activeforeground="white", borderwidth=0, text="Save settings", font=("Helvetica", 10, "bold"), height=4, width=25, command=lambda: self.saveSettings())
+        saveButton = Button(self, bg="#4F5F52", fg="white", activebackground="#4F5F52", activeforeground="white",
+                            borderwidth=0, text="Save settings", font=("Helvetica", 10, "bold"), height=4, width=25,
+                            command=lambda: self.saveSettings())
         saveButton.place(x=130, y=600)
-        leaveButton = Button(self, bg="#4F5F52", fg="white", activebackground="#4F5F52", activeforeground="white", borderwidth=0, text="Go back", font=("Helvetica", 10, "bold"), height=4, width=25, command=lambda: self.app.switchFrame(MainFrame.__name__))
+        leaveButton = Button(self, bg="#4F5F52", fg="white", activebackground="#4F5F52", activeforeground="white",
+                             borderwidth=0, text="Go back", font=("Helvetica", 10, "bold"), height=4, width=25,
+                             command=lambda: self.app.switchFrame(MainFrame.__name__))
         leaveButton.place(x=500, y=600)
     
     def saveSettings(self):
