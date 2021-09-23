@@ -46,10 +46,11 @@ class MainFrame(Frame):
         
         self.app = app
         self.game = game
+        #GIF
         self.gifLabel = None
         self.frames = Image.open("Images/Mowgli-Bagheera.gif").n_frames
         self.gifImages = [PhotoImage(file="Images/Mowgli-Bagheera.gif", format=f"gif -index {i}") for i in range(self.frames)]
-        self.shuffleBingo()
+
         self.createWidgets()
         
     def createWidgets(self):
