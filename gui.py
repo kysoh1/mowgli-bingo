@@ -3,22 +3,14 @@ from PIL import ImageTk
 from PIL import Image
 import numpy as np
 
-import platform
-
 import bingo
 
 class Application(Tk):
     def __init__(self):
         Tk.__init__(self)
-        # Frame settings
+        #Frame settings
         self.title("Welcome to Mowgli Bingo! Moooooooooowgli Edition")
-
-        # Linux doesn't like calling this function. I mean if you think
-        # about it Linux doesn't have icons for their apps anyways.
-        curPlat = platform.system()
-        if curPlat == "Windows":
-            self.iconbitmap("Mowgli.ico")
-
+        self.iconbitmap("Mowgli.ico")
         self.geometry("800x800")
         self.minsize(800, 700)
         self.maxsize(800, 700)
@@ -160,3 +152,4 @@ class SettingsFrame(Frame):
         
         newLabels = np.array(newLabels).reshape(4, 4)
         self.game.changeLabels(newLabels.tolist())
+
