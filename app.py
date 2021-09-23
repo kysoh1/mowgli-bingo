@@ -18,7 +18,8 @@ class Application(Frame):
         labels = self.game.labels
         for row in labels:
             for label in row:
-                button = Button(self.root, wraplength=80, justify=CENTER, bg="white", text=label, height=8, width=21, command=lambda x=rowIdx, y=columnIdx: self.buttonClick(x, y))
+                button = Button(self.root, wraplength=80, justify=CENTER, bg="white", text=label, height=8, width=21)
+                button.configure(command=lambda button=button, x=columnIdx, y=rowIdx: self.buttonClick(button, x, y))
                 #Pad top left
                 if columnIdx == 0 and rowIdx == 0:
                     button.grid(row=rowIdx, column=columnIdx, padx=(80, 0), pady=(80, 0))
@@ -35,9 +36,19 @@ class Application(Frame):
                 
             rowIdx = rowIdx + 1
             columnIdx = 0
+            
+        #label = Label(self.root, "Bingo!")
         
-    def buttonClick(self, x, y):
-        print(x, y)
+    def buttonClick(self, button, x, y):
+        state = self.game.state
+        self.game.updateState(y, x)
+        if state[y][x] == 1:
+            button.configure(bg="lime")
+        else:
+            button.configure(bg="white")
+            
+        if self.game.checkWin():
+            print("win")
 
 root = Tk()
 root.iconbitmap("Mowgli.ico")
