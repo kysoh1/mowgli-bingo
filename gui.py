@@ -10,12 +10,11 @@ class Application(Tk):
         Tk.__init__(self)
         #Frame settings
         self.title("Welcome to Mowgli Bingo! Moooooooooowgli Edition")
-        self.iconbitmap("Mowgli.ico")
+        # self.iconbitmap("Mowgli.ico")
         self.geometry("800x800")
         self.minsize(800, 700)
         self.maxsize(800, 700)
         
-        # Store frames
         #Game object
         self.game = bingo.Game()
         
@@ -118,31 +117,27 @@ class SettingsFrame(Frame):
         self.createWidgets()
         
     def createWidgets(self):
-        leaveButton = Button(self, text="Go back", height=5, width=20, command=lambda: self.app.switchFrame(MainFrame.__name__))
-        leaveButton.place(x=0, y=0)
-        leaveButton.pack()
-        
         labels = np.array(self.game.labels).ravel().tolist()
         for i in range(0, len(labels) // 2):
-            leftText = Text(self, height=4, width=40)
-            rightText = Text(self, height=4, width=40)
+            leftText = Text(self, bg="#CCFFE5", borderwidth=2, height=4, width=40, relief="solid")
+            rightText = Text(self, bg="#CCFFE5", borderwidth=2, height=4, width=40, relief="solid")
             leftText.insert(INSERT, labels[i])
             rightText.insert(INSERT, labels[i + len(labels) // 2])
             
             if i == 0:
-                leftText.grid(row=i, column=0, padx=(80, 0), pady=(30,0))
-                rightText.grid(row=i, column=1, pady=(30,0))
+                leftText.grid(row=i, column=0, padx=(80, 20), pady=(10, 1))
+                rightText.grid(row=i, column=1, pady=(10, 1))
             else:
-                leftText.grid(row=i, column=0, padx=(80, 0))
-                rightText.grid(row=i, column=1)
+                leftText.grid(row=i, column=0, padx=(80, 20), pady=(1, 1))
+                rightText.grid(row=i, column=1, pady=(1, 1))
             
             self.texts.append(leftText)
             self.texts.append(rightText)
             
-        saveButton = Button(self, text="Save settings", height=5, width=20, command=lambda: self.saveSettings())
-        saveButton.place(x=200, y=590)
-        leaveButton = Button(self, text="Go back", height=5, width=20, command=lambda: self.app.switchFrame(MainFrame.__name__))
-        leaveButton.place(x=470, y=590)
+        saveButton = Button(self, bg="#4F5F52", fg="white", activebackground="#4F5F52", activeforeground="white", borderwidth=0, text="Save settings", font=("Helvetica", 10, "bold"), height=4, width=25, command=lambda: self.saveSettings())
+        saveButton.place(x=130, y=600)
+        leaveButton = Button(self, bg="#4F5F52", fg="white", activebackground="#4F5F52", activeforeground="white", borderwidth=0, text="Go back", font=("Helvetica", 10, "bold"), height=4, width=25, command=lambda: self.app.switchFrame(MainFrame.__name__))
+        leaveButton.place(x=500, y=600)
     
     def saveSettings(self):
         newLabels = []
@@ -152,4 +147,3 @@ class SettingsFrame(Frame):
         
         newLabels = np.array(newLabels).reshape(4, 4)
         self.game.changeLabels(newLabels.tolist())
-
