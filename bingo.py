@@ -56,6 +56,7 @@ class Game():
             if self.state[i][len(self.state) - 1 - i] == 0:
                 diagTwo = False
             
+        #At least one diagonal is a win
         if diagOne or diagTwo:
             return True
 
