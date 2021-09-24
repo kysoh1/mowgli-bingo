@@ -16,9 +16,11 @@ class Application(Tk):
     def __init__(self):
         Tk.__init__(self)
         #Frame settings
+        if platform.system() == "Windows":
+            self.iconbitmap("resources/images/Mowgli.ico")
+            self.geometry("800x800")
+            
         self.title("Welcome to Mowgli Bingo! Moooooooooowgli Edition")
-        self.iconbitmap("resources/images/Mowgli.ico")
-        self.geometry("800x800")
         self.minsize(800, 700)
         self.maxsize(800, 700)
         
@@ -39,7 +41,7 @@ class Application(Tk):
             frame.grid(row=0, column=0, sticky="nsew")
             
         self.switchFrame(MainFrame.__name__)
-        
+    
     def switchFrame(self, frameType):
         frame = self.frames[frameType]
         frame.tkraise()
@@ -54,8 +56,8 @@ class MainFrame(Frame):
         self.app = app
         self.game = game
         
-        #Sound
-        self.play()
+        #Music
+        self.sound = multiprocessing.Process(target=playsound, args=("resources/sound/TheBareNecessities.wav",))
         
         #GIF
         self.gifLabel = None
@@ -63,9 +65,14 @@ class MainFrame(Frame):
         self.gifImages = [PhotoImage(file="resources/images/Mowgli-Bagheera.gif", format=f"gif -index {i}") for i in range(self.frames)]
 
         self.createWidgets()
-    
-    def play(self):
-        playsound("resources/sound/TheBareNecessities.wav")
+        
+    def destroy(self):
+        # When the frame is destroyed we do not want the music to continue playing.
+        if self.sound.is_alive():
+            self.sound.terminate()
+            self.sound = multiprocessing.Process(target=playsound, args=("resources/sound/TheBareNecessities.wav",))
+            
+        Frame.destroy(self)
     
     def createWidgets(self):
         for i in range(0, len(self.game.labels)):
@@ -101,6 +108,11 @@ class MainFrame(Frame):
         
         #Display win text
         if self.game.checkWin():
+            if platform.system() == "Windows":
+                winsound.PlaySound("resources/sound/TheBareNecessities.wav", winsound.SND_FILENAME | winsound.SND_ASYNC)
+            else:
+                self.sound.start()
+                    
             if self.gifLabel is None:
                 self.gifLabel = Label(self, image="")
                 self.gifLabel.place(x=345, y=625)
@@ -113,6 +125,14 @@ class MainFrame(Frame):
         self.game.randomiseLabels()
         self.game.resetState()
         self.createWidgets()
+        
+        if self.sound.is_alive():
+            self.sound.terminate()
+            self.sound = multiprocessing.Process(target=playsound, args=("resources/sound/TheBareNecessities.wav",))
+
+        # When the shuffle button is pressed kill the playing sound on a Windows machine.
+        if platform.system() == "Windows":
+            winsound.PlaySound(None, winsound.SND_FILENAME)
     
         if self.gifLabel is not None:
             self.gifLabel.destroy()
