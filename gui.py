@@ -120,7 +120,11 @@ class MainFrame(Frame):
             if self.label is None:
                 self.label = Label(self, text="Bingo!", height=5, width=20)
                 
-                self.p.start()
+                # Testing Purposes
+                if platform.system() == "Windows":
+                    winsound.Playsound("TheBareNecessities.wav", winsound.SND_FILENAME)
+                else:
+                    self.p.start()
                 
                 self.label.place(x=330, y=600)
         elif self.label is not None:
