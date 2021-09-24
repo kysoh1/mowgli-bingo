@@ -2,7 +2,7 @@ from tkinter import *
 from PIL import ImageTk
 from PIL import Image
 from playsound import playsound
-import threading
+import multiprocessing
 import platform
 import numpy as np
 
@@ -51,12 +51,25 @@ class MainFrame(Frame):
         self.label = Label(self, image=self.img)
         self.label.place(x=0, y=0, relwidth=1, relheight=1)
         
+        # Essentially this is a background process that will run. It will call the playsound
+        # function to play BN.
+        self.p = multiprocessing.Process(target=playsound, args=("The Bare Necessities.mp3",))
+        
         self.app = app
         self.game = game
         self.label = None
         self.shuffleBingo()
         self.createWidgets()
         
+    # We are essentially overriding the inherited function.
+    def destroy(self):
+        # When the frame is destroyed we do not want the music to continue playing.
+        if self.p.is_alive():
+            self.p.terminate()
+            self.p = multiprocessing.Process(target=playsound, args=("The Bare Necessities.mp3",))
+            
+        Frame.destroy(self)
+    
     def createWidgets(self):
         rowIdx = 0
         columnIdx = 0
@@ -104,7 +117,7 @@ class MainFrame(Frame):
             if self.label is None:
                 self.label = Label(self, text="Bingo!", height=5, width=20)
                 
-                playsound("The Bare Necessities.mp3", False)
+                self.p.start()
                 
                 self.label.place(x=330, y=600)
         elif self.label is not None:
@@ -115,6 +128,11 @@ class MainFrame(Frame):
         self.game.randomiseLabels()
         self.game.resetState()
         self.createWidgets()
+        
+        # When the shuffle button is pressed we do not want the music to continue playing.
+        if self.p.is_alive():
+            self.p.terminate()
+            self.p = multiprocessing.Process(target=playsound, args=("The Bare Necessities.mp3",))
         
         if self.label is not None:
             self.label.destroy()
