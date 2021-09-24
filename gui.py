@@ -44,18 +44,6 @@ class Application(Tk):
         frame = self.frames[frameType]
         frame.tkraise()
 
-# This is needed
-class bnThread(threading.Thread):
-        
-    def __init__(self, threadID, name, playing):
-        threading.Thread.__init__(self)
-        self.threadID = threadID
-        self.name = name
-        self.playing = playing
-            
-    def run(self):
-        playsound("The Bare Necessities.mp3")
-
 class MainFrame(Frame):
     def __init__(self, parent, app, game):
         Frame.__init__(self, parent)
@@ -116,8 +104,7 @@ class MainFrame(Frame):
             if self.label is None:
                 self.label = Label(self, text="Bingo!", height=5, width=20)
                 
-                soundThread = bnThread(1, "bnThread", True)
-                soundThread.start()
+                playsound("The Bare Necessities.mp3", False)
                 
                 self.label.place(x=330, y=600)
         elif self.label is not None:
