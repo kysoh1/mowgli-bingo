@@ -27,21 +27,24 @@ class Application(Tk):
         #Game object
         self.game = bingo.Game()
         
-        #Store frames
+        #Store frames and simply load them up based of Frame name
+        #Don't need to to destroy and re-create frames
         self.frames = {}
         container = Frame(self)
         container.pack(side="top", fill="both", expand=True)
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
         
+        #Create instances of each Frame
         for frameType in (MainFrame, SettingsFrame):
             pageName = frameType.__name__
             frame = frameType(parent=container, app=self, game=self.game)
             self.frames[pageName] = frame
             frame.grid(row=0, column=0, sticky="nsew")
-            
+        
         self.switchFrame(MainFrame.__name__)
     
+    #Frame is switched whenever button is clicked
     def switchFrame(self, frameType):
         frame = self.frames[frameType]
         frame.tkraise()
@@ -75,6 +78,7 @@ class MainFrame(Frame):
         Frame.destroy(self)
     
     def createWidgets(self):
+        #Create squares in grid format
         for i in range(0, len(self.game.labels)):
             for j in range(0, len(self.game.labels)):
                 button = Button(self, bg="#CCFFE5", activebackground="#CCFFE5", borderwidth=1, wraplength=100, justify=CENTER, text=self.game.labels[i][j], font=("MV Boli", 10, "bold"), relief="solid", height=8, width=20)
@@ -137,7 +141,8 @@ class MainFrame(Frame):
         if self.gifLabel is not None:
             self.gifLabel.destroy()
             self.gifLabel = None
-            
+        
+    #Animate GIF
     def animation(self, count, animate):
         if self.gifLabel is None:
             return
@@ -203,7 +208,9 @@ class SettingsFrame(Frame):
     def saveSettings(self):
         newLabels = []
         for text in self.texts:
+            #String from text boxes append new line to the end
             label = text.get(1.0, END).strip("\n")
+            #Empty strings or strings with white space only default to "FREE"
             if label.isspace() or label == "":
                 label = "FREE"
             newLabels.append(label)
