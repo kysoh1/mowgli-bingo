@@ -53,7 +53,7 @@ class MainFrame(Frame):
         
         # Essentially this is a background process that will run. It will call the playsound
         # function to play BN.
-        self.p = multiprocessing.Process(target=playsound, args=("The Bare Necessities.mp3",))
+        self.p = multiprocessing.Process(target=playsound, args=("TheBareNecessities.mp3",))
         
         self.app = app
         self.game = game
@@ -66,7 +66,7 @@ class MainFrame(Frame):
         # When the frame is destroyed we do not want the music to continue playing.
         if self.p.is_alive():
             self.p.terminate()
-            self.p = multiprocessing.Process(target=playsound, args=("The Bare Necessities.mp3",))
+            self.p = multiprocessing.Process(target=playsound, args=("TheBareNecessities.mp3",))
             
         Frame.destroy(self)
     
@@ -132,7 +132,7 @@ class MainFrame(Frame):
         # When the shuffle button is pressed we do not want the music to continue playing.
         if self.p.is_alive():
             self.p.terminate()
-            self.p = multiprocessing.Process(target=playsound, args=("The Bare Necessities.mp3",))
+            self.p = multiprocessing.Process(target=playsound, args=("TheBareNecessities.mp3",))
         
         if self.label is not None:
             self.label.destroy()
