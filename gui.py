@@ -61,7 +61,7 @@ class MainFrame(Frame):
         for row in self.game.labels:
             for label in row:
                 button = Button(self, bg="#CCFFE5", activebackground="#D2FF4D", borderwidth=1, wraplength=100, justify=CENTER,
-                                text=label, font=("Arial", 10, "bold"), relief="flat", height=8, width=20)
+                                text=label, font=("Arial", 10, "bold"), relief="flat", cursor="hand2", height=8, width=20)
                 button.configure(command=lambda button=button, x=columnIdx, y=rowIdx: self.buttonClick(button, x, y))
                 #Pad top left
                 if columnIdx == 0 and rowIdx == 0:
