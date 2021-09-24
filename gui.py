@@ -129,6 +129,14 @@ class MainFrame(Frame):
                 self.label.place(x=330, y=600)
         elif self.label is not None:
             self.label.destroy()
+            
+            if platform.system() == "Windows":
+                winsound.PlaySound(None, winsound.SND_FILENAME)
+                
+            if self.p.is_alive():
+                self.p.terminate()
+                self.p = multiprocessing.Process(target=playsound, args=("TheBareNecessities.wav",))
+                 
             self.label = None
     
     def shuffleBingo(self):
