@@ -1,7 +1,14 @@
 from tkinter import *
 from PIL import ImageTk
 from PIL import Image
+from playsound import playsound
+
+import multiprocessing
+import platform
 import numpy as np
+
+if platform.system() == "Windows":
+    import winsound
 
 import bingo
 
@@ -10,7 +17,7 @@ class Application(Tk):
         Tk.__init__(self)
         #Frame settings
         self.title("Welcome to Mowgli Bingo! Moooooooooowgli Edition")
-        self.iconbitmap("Images/Mowgli.ico")
+        self.iconbitmap("resources/images/Mowgli.ico")
         self.geometry("800x800")
         self.minsize(800, 700)
         self.maxsize(800, 700)
@@ -40,19 +47,26 @@ class Application(Tk):
 class MainFrame(Frame):
     def __init__(self, parent, app, game):
         Frame.__init__(self, parent)
-        self.img = PhotoImage(file="Images/Mowgli.png")
+        self.img = PhotoImage(file="resources/images/Mowgli.png")
         self.label = Label(self, image=self.img)
         self.label.place(x=0, y=0, relwidth=1, relheight=1)
         
         self.app = app
         self.game = game
+        
+        #Sound
+        self.play()
+        
         #GIF
         self.gifLabel = None
-        self.frames = Image.open("Images/Mowgli-Bagheera.gif").n_frames
-        self.gifImages = [PhotoImage(file="Images/Mowgli-Bagheera.gif", format=f"gif -index {i}") for i in range(self.frames)]
+        self.frames = Image.open("resources/images/Mowgli-Bagheera.gif").n_frames
+        self.gifImages = [PhotoImage(file="resources/images/Mowgli-Bagheera.gif", format=f"gif -index {i}") for i in range(self.frames)]
 
         self.createWidgets()
-        
+    
+    def play(self):
+        playsound("resources/sound/TheBareNecessities.wav")
+    
     def createWidgets(self):
         for i in range(0, len(self.game.labels)):
             for j in range(0, len(self.game.labels)):
@@ -99,7 +113,7 @@ class MainFrame(Frame):
         self.game.randomiseLabels()
         self.game.resetState()
         self.createWidgets()
-        
+    
         if self.gifLabel is not None:
             self.gifLabel.destroy()
             self.gifLabel = None
@@ -119,7 +133,7 @@ class MainFrame(Frame):
 class SettingsFrame(Frame):
     def __init__(self, parent, app, game):
         Frame.__init__(self, parent)
-        self.img = PhotoImage(file="Images/Mowgli.png")
+        self.img = PhotoImage(file="resources/images/Mowgli.png")
         self.label = Label(self, image=self.img)
         self.label.place(x=0, y=0, relwidth=1, relheight=1)
         
