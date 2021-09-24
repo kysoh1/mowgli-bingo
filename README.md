@@ -5,5 +5,7 @@
 - Pillow
 - numpy
 - Tkinter
+- playsound
+- winsound
 
 *If you don't know how to install the above, I don't know why you're even here.*
