@@ -6,6 +6,9 @@ import multiprocessing
 import platform
 import numpy as np
 
+if platform.system() == "Windows":
+    import winsound
+
 import bingo
 
 class Application(Tk):
@@ -53,7 +56,7 @@ class MainFrame(Frame):
         
         # Essentially this is a background process that will run. It will call the playsound
         # function to play BN.
-        self.p = multiprocessing.Process(target=playsound, args=("TheBareNecessities.mp3",))
+        self.p = multiprocessing.Process(target=playsound, args=("TheBareNecessities.wav",))
         
         self.app = app
         self.game = game
@@ -66,7 +69,7 @@ class MainFrame(Frame):
         # When the frame is destroyed we do not want the music to continue playing.
         if self.p.is_alive():
             self.p.terminate()
-            self.p = multiprocessing.Process(target=playsound, args=("TheBareNecessities.mp3",))
+            self.p = multiprocessing.Process(target=playsound, args=("TheBareNecessities.wav",))
             
         Frame.destroy(self)
     
@@ -132,7 +135,7 @@ class MainFrame(Frame):
         # When the shuffle button is pressed we do not want the music to continue playing.
         if self.p.is_alive():
             self.p.terminate()
-            self.p = multiprocessing.Process(target=playsound, args=("TheBareNecessities.mp3",))
+            self.p = multiprocessing.Process(target=playsound, args=("TheBareNecessities.wav",))
         
         if self.label is not None:
             self.label.destroy()
