@@ -120,7 +120,7 @@ class MainFrame(Frame):
             if self.label is None:
                 self.label = Label(self, text="Bingo!", height=5, width=20)
                 
-                # Testing Purposes
+                # If it is Windows we must use winsound to play the audio.
                 if platform.system() == "Windows":
                     winsound.PlaySound("TheBareNecessities.wav", winsound.SND_FILENAME | winsound.SND_ASYNC)
                 else:
@@ -140,6 +140,10 @@ class MainFrame(Frame):
         if self.p.is_alive():
             self.p.terminate()
             self.p = multiprocessing.Process(target=playsound, args=("TheBareNecessities.wav",))
+
+        # When the shuffle button is pressed kill the playing sound on a Windows machine.
+        if platform.system() == "Windows":
+            winsound.PlaySound(None, winsound.SND_FILENAME)
         
         if self.label is not None:
             self.label.destroy()
