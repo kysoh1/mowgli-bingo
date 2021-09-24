@@ -80,11 +80,11 @@ class MainFrame(Frame):
             rowIdx = rowIdx + 1
             columnIdx = 0
             
-        shuffleButton = Button(self, bg="#4F5F52", fg="white", activebackground="#4F5F52", activeforeground="white",
+        shuffleButton = Button(self, bg="#4F5F52", fg="white", activebackground="#669900", activeforeground="white",
                                borderwidth=0, text="Shuffle", font=("Helvetica", 10, "bold"), height=4, width=20,
                                relief="solid", command=lambda: self.shuffleBingo())
         shuffleButton.place(x=80, y=600)
-        labelButton = Button(self, bg="#4F5F52", fg="white", activebackground="#4F5F52", activeforeground="white",
+        labelButton = Button(self, bg="#4F5F52", fg="white", activebackground="#669900", activeforeground="white",
                              borderwidth=0, text="Change contents", font=("Helvetica", 10, "bold"), height=4, width=20,
                              relief="solid", command=lambda: self.app.switchFrame(SettingsFrame.__name__))
         labelButton.place(x=550, y=600)
