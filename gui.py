@@ -122,7 +122,7 @@ class MainFrame(Frame):
                 
                 # Testing Purposes
                 if platform.system() == "Windows":
-                    winsound.Playsound("TheBareNecessities.wav", winsound.SND_FILENAME)
+                    winsound.PlaySound("TheBareNecessities.wav", winsound.SND_FILENAME | winsound.SND_ASYNC)
                 else:
                     self.p.start()
                 
